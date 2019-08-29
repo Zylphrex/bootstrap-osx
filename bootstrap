@@ -1,0 +1,162 @@
+#!/bin/bash
+
+set -euo pipefail
+
+function install() {
+    VERIFY_CMD=$1
+    INSTALL_CMD=$2
+    APP=$3
+    NAME=${4:-$APP}
+
+    if eval "${VERIFY_CMD}" # >/dev/null 2>&1
+    then
+        echo "Already installed, skipping... [${NAME}]"
+    else
+        echo "Not installed yet, installing... [${NAME}]"
+        sh -c "$INSTALL_CMD"
+    fi
+}
+
+function clone() {
+    NAME=$1
+    REPO=$2
+    DEST=$3
+
+    echo $DEST
+    if [ -d "${DEST}" ]
+    then
+        echo "Already cloned, skipping... [${NAME}]"
+    else
+        echo "Not cloned yet, cloning... [${NAME}]"
+        git clone $REPO $DEST
+    fi
+}
+
+PWD="$(pwd)"
+
+install 'xcode-select -p' \
+        'xcode-select --install' \
+        'Command Line Tools'
+
+install 'which brew' \
+        '/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"' \
+        'Homebrew'
+
+brew bundle
+
+clone 'iTerm2' https://github.com/dracula/iterm.git ~/Documents/repos/iterm
+clone 'terminal.app' https://github.com/dracula/terminal-app.git ~/Documents/repos/terminal-app
+
+touch ~/.hushlogin
+
+ZSH_BIN="$(brew --prefix)/bin/zsh"
+if [[ ! -f $ZSH_BIN ]]
+then
+    echo "Binary not found, skipping... [zsh]"
+else
+    echo $SHELL
+    if [[ $SHELL == $ZSH_BIN ]]
+    then
+        echo "Already default shell, nothing to do..."
+    else
+        echo "Setting default shell to zsh..."
+        if grep -q $ZSH_BIN /etc/shells
+        then
+            sudo sh -c "chsh -s $ZSH_BIN $USER"
+        else
+            USER=$(whoami)
+            sudo sh -c "echo $ZSH_BIN >> /etc/shells && chsh -s $ZSH_BIN $USER"
+        fi
+    fi
+fi
+
+install 'zsh -c "source ~/.zshrc && [ -d ${ZSH:-~/.oh-my-zsh} ]"' \
+        'sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)" "" --unattended' \
+        'Oh My Zsh'
+
+echo "Changing Oh-My-Zsh theme to powerlevel10k..."
+ZSH_CUSTOM=$(zsh -c 'source ~/.zshrc >/dev/null 2>&1 && printf "%s" "$ZSH_CUSTOM"')
+clone powerlevel10k https://github.com/romkatv/powerlevel10k.git $ZSH_CUSTOM/themes/powerlevel10k
+
+echo "Configuring pyenv..."
+install 'pip --version' 'sudo easy_install pip' 'pip'
+sudo pip install --upgrade pip
+sudo pip install -r requirements.txt
+
+function pyenv_install() {
+    PYTHON_VERSION=$1
+
+    if zsh -c "pyenv versions | grep -q '^  $PYTHON_VERSION'"
+    then
+        echo "Already installed, skipping... [python ${PYTHON_VERSION}]"
+    else
+        echo "Not installed yet, installing... [python ${PYTHON_VERSION}]"
+        pyenv install $PYTHON_VERSION
+    fi
+}
+
+# install the latest python 2 and 3 versions
+pyenv_install "$(pyenv install -l | grep '^  2' | grep -v '-' | tail -n 1 | xargs)"
+pyenv_install "$(pyenv install -l | grep '^  3' | grep -v '-' | tail -n 1 | xargs)"
+
+echo "Configuring nvm..."
+export NVM_DIR="$HOME/.nvm"
+[ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"  # This loads nvm
+echo "asdfasdf"
+nvm install --lts=argon
+nvm install --lts=boron
+nvm install --lts=carbon
+nvm install --lts=dubnium
+
+echo "Configuring jenv..."
+# doesn't work idk why, do it manually
+# jenv enable-plugin export
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-8.jdk/Contents/Home/
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-9.jdk/Contents/Home/
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-10.jdk/Contents/Home/
+jenv add /Library/Java/JavaVirtualMachines/adoptopenjdk-11.jdk/Contents/Home/
+
+echo "Configuring goenv..."
+
+echo "Configuring rbenv..."
+
+function rbenv_install() {
+    RUBY_VERSION=$1
+
+    if zsh -c "rbenv versions | grep -q '^  $RUBY_VERSION'"
+    then
+        echo "Already installed, skipping... [ruby ${RUBY_VERSION}]"
+    else
+        echo "Not installed yet, installing... [ruby ${RUBY_VERSION}]"
+        rbenv install $RUBY_VERSION
+    fi
+}
+
+rbenv_install "$(rbenv install -l | grep '^  2' | grep -v '-' | tail -n 1 | xargs)"
+
+echo "Configuring direnv..."
+cp .direnvrc ~/.direnvrc
+
+echo "Configuring powerlevel10k..."
+cp .p10k.zsh ~/.p10k.zsh
+
+echo "Configuring zsh..."
+cp .zshrc ~/.zshrc
+
+echo "Configuring vim..."
+curl -sfLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+mkdir -p ~/.config/nvim
+cp init.vim ~/.config/nvim/init.vim
+nvim +PlugInstall +qall
+
+echo "Configuring git..."
+mkdir -p ~/.config/git
+cp .gitignore ~/.config/git/
+git config --global core.excludefiles ~/.config/git/.gitignore
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
+
+echo Done!

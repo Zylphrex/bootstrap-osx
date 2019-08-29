@@ -1,0 +1,33 @@
+use_python() {
+    local python_root=$HOME/.pyenv/versions/$1
+    load_prefix "$python_root"
+    layout_python "$python_root/bin/python"
+}
+
+use_node() {
+    local node_version=$1
+  
+    nvm_sh=/usr/local/opt/nvm/nvm.sh
+    if [[ -e $nvm_sh ]]; then
+        source $nvm_sh
+        nvm use $node_version > /dev/null
+    fi
+}
+
+use_java() {
+    local java_version=$1
+
+    jenv local $java_version
+}
+
+layout_golang() {
+  export GOPATH="$PWD/vendor:$PWD"
+  PATH_add "$PWD/vendor/bin"
+  PATH_add bin
+}
+
+use_ruby() {
+    local ruby_root=$HOME/.rbenv/versions/$1
+    load_prefix "$ruby_root"
+    layout_ruby
+}
