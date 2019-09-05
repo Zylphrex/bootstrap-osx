@@ -45,6 +45,7 @@ cask "mactex"
 cask "rstudio"
 cask "slack"
 cask "spotify"
+cask "texmaker"
 cask "virtualbox"
 
 # mas "Xcode", id: 497799835
