@@ -53,6 +53,7 @@ cask "skype"
 cask "slack"
 cask "spotify"
 cask "texmaker"
+cask "webtorrent"
 cask "virtualbox"
 
 # mas "Xcode", id: 497799835
