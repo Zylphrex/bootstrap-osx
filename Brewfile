@@ -1,4 +1,5 @@
 tap "adoptopenjdk/openjdk"
+tap "homebrew/cask-drivers"
 
 brew "bat"
 brew "bench"
@@ -47,6 +48,7 @@ cask "firefox"
 cask "google-backup-and-sync"
 cask "google-chrome"
 cask "iterm2"
+cask "logitech-options"
 cask "macpass"
 cask "mactex"
 cask "rstudio"
