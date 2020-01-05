@@ -3,6 +3,7 @@ tap "homebrew/cask-drivers"
 
 brew "bat"
 brew "bench"
+brew "chruby"
 brew "colordiff"
 brew "direnv"
 brew "exa"

@@ -126,3 +126,6 @@ export NVM_DIR="$HOME/.nvm"
 # jenv
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
+
+# chruby
+source $(brew --prefix chruby)/share/chruby/chruby.sh
