@@ -118,6 +118,12 @@ eval "$(pyenv init -)"
 # pip
 export PIP_REQUIRE_VIRTUALENV="true"
 
+# rbenv
+eval "$(rbenv init -)"
+
+# chruby
+source $(brew --prefix chruby)/share/chruby/chruby.sh
+
 # nvm
 export NVM_DIR="$HOME/.nvm"
 [ -s "$(brew --prefix nvm)/nvm.sh" ] && . "$(brew --prefix nvm)/nvm.sh"  # This loads nvm
@@ -126,6 +132,3 @@ export NVM_DIR="$HOME/.nvm"
 # jenv
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
-
-# chruby
-source $(brew --prefix chruby)/share/chruby/chruby.sh
