@@ -104,10 +104,11 @@ Plug 'alx741/yesod.vim'
 Plug 'w0rp/ale'
 
 " Syntax Highlighting
-Plug 'purescript-contrib/purescript-vim'
-Plug 'pbrisbin/vim-syntax-shakespeare'
-Plug 'mxw/vim-jsx'
+Plug 'JuliaEditorSupport/julia-vim'
 Plug 'leafgarland/typescript-vim'
+Plug 'mxw/vim-jsx'
+Plug 'pbrisbin/vim-syntax-shakespeare'
+Plug 'purescript-contrib/purescript-vim'
 Plug 'vim-scripts/applescript.vim'
 
 " Initialize plugin system
