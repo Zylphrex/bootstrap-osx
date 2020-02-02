@@ -60,6 +60,7 @@ cask "spotify"
 cask "texmaker"
 cask "webtorrent"
 cask "virtualbox"
+cask "zoomus"
 
 mas "Xcode", id: 497799835
 mas "Keynote", id: 409183694
