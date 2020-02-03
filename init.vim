@@ -109,6 +109,7 @@ Plug 'hashivim/vim-terraform'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'pbrisbin/vim-syntax-shakespeare'
+Plug 'peitalin/vim-jsx-typescript'
 Plug 'purescript-contrib/purescript-vim'
 Plug 'vim-scripts/applescript.vim'
 
