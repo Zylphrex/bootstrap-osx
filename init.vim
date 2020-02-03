@@ -105,6 +105,7 @@ Plug 'w0rp/ale'
 
 " Syntax Highlighting
 Plug 'JuliaEditorSupport/julia-vim'
+Plug 'hashivim/vim-terraform'
 Plug 'leafgarland/typescript-vim'
 Plug 'mxw/vim-jsx'
 Plug 'pbrisbin/vim-syntax-shakespeare'
