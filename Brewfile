@@ -35,6 +35,7 @@ brew "terraform"
 brew "tmux"
 brew "tree"
 brew "watch"
+brew "watchman"
 brew "wget"
 brew "yarn", args: ["ignore-dependencies"]  # the only dependency is node which we will install using nvm
 brew "z"
