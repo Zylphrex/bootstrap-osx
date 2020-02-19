@@ -132,3 +132,10 @@ export NVM_DIR="$HOME/.nvm"
 # jenv
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
+
+# android studio
+export ANDROID_HOME="/Users/tonyx/Library/Android/sdk"
+export PATH="$ANDROID_HOME/emulator:$PATH"
+export PATH="$ANDROID_HOME/tools:$PATH"
+export PATH="$ANDROID_HOME/tools/bin:$PATH"
+export PATH="$ANDROID_HOME/platform-tools:$PATH"
