@@ -133,6 +133,9 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.jenv/bin:$PATH"
 eval "$(jenv init -)"
 
+# fzf
+export FZF_DEFAULT_COMMAND='fd --type f'
+
 # android studio
 export ANDROID_HOME="/Users/tonyx/Library/Android/sdk"
 export PATH="$ANDROID_HOME/emulator:$PATH"
